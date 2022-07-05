@@ -20,7 +20,6 @@ const sendRequest = (axiosFunc, url, res, data=null) => {
     axiosFunc(url, data)
     .then(response => {
         console.log('printing response data');
-        console.log(response.data);
         console.log(response.headers['content-type']);
         const apiResponse = response.data ? response.data : {success: true};
         if(!(response.headers['content-type'] === 'application/json')) {
@@ -49,10 +48,12 @@ app.get('/post', (req, res, next) => {
 });
 
 app.get('', (req, res, next) => {
+    console.log('GET');
     return sendRequest(axios.get, makeURL(req.query), res);
 });
 
 app.post('', (req, res, next) => {
+    console.log('POST');
     const { url, ...queryParams } = req.query
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 })
