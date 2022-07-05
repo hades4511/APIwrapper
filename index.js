@@ -47,8 +47,9 @@ app.get('/post', (req, res, next) => {
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 });
 
-app.get('', (req, res, next) => {
+app.use('', (req, res, next) => {
     console.log('GET');
+    console.log(req.method);
     return sendRequest(axios.get, makeURL(req.query), res);
 });
 
