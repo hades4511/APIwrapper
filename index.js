@@ -19,7 +19,6 @@ const sendRequest = (axiosFunc, url, res, data=null) => {
     console.log(data);
     axiosFunc(url, data)
     .then(response => {
-        console.log('printing response data');
         console.log(response.headers['content-type']);
         const apiResponse = response.data ? response.data : {success: true};
         if(!(response.headers['content-type'] === 'application/json')) {
@@ -47,17 +46,17 @@ app.get('/post', (req, res, next) => {
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 });
 
+app.post('/get', (req, res, next) => {
+    console.log('Force POST');
+    const { url, ...queryParams } = req.query
+    return sendRequest(axios.post, makeURL(req.query), res, queryParams);
+});
+
 app.use('', (req, res, next) => {
     console.log('GET');
     const { url, ...queryParams } = req.query
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 });
-
-// app.post('', (req, res, next) => {
-//     console.log('POST');
-//     const { url, ...queryParams } = req.query
-//     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
-// })
 
 app.listen(port, function() {
     console.log(`Listening on port ${port}`);
