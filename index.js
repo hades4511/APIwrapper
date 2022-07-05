@@ -18,11 +18,7 @@ app.post('', (req, res, next) => {
     res.json(query);
 })
 
-const sendRequest = (mode, url, res) => {
-    if (mode === 3){
-        return -1;
-    }
-    const axiosFunc = mode ? axios.post : axios.get;
+const sendRequest = (axiosFunc, url, res) => {
     axiosFunc(url)
     .then(response => {
         console.log('printing response data');
@@ -31,14 +27,8 @@ const sendRequest = (mode, url, res) => {
         res.json(apiResponse);
     })
     .catch(error => {
-        if (error.response.status === 404){
-            console.log(`sending ${mode + 1}`);
-            const customRes = sendRequest(mode + 1, url, res);
-            if (customRes === -1){
-                res.json(error);
-            }
-        }
-        else res.json(error);
+        console.log(error);
+        res.json(error);
     });
 };
 
@@ -47,7 +37,8 @@ app.use('', (req, res, next) => {
     const qs = new URLSearchParams(queryParams).toString();
     console.log(qs);
     console.log(`${url}?${qs}`)
-    sendRequest(0, `${url}?${qs}`, res);
+    const axiosFunc = req.method === 'GET' ? axios.get : axios.post;
+    sendRequest(axiosFunc, `${url}?${qs}`, res);
 })
 
 app.listen(port, function() {
