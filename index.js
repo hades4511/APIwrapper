@@ -22,7 +22,7 @@ const sendRequest = (mode, url, res) => {
     if (mode === 3){
         return -1;
     }
-    const axiosFunc = mode ? axios.get : axios.post;
+    const axiosFunc = mode ? axios.post : axios.get;
     axiosFunc(url)
     .then(response => {
         console.log('printing response data');
