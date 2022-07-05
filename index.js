@@ -19,8 +19,8 @@ const sendRequest = (axiosFunc, url, res, data=null) => {
     console.log(data);
     axiosFunc(url, data)
     .then(response => {
-        // console.log('printing response data');
-        // console.log(response.data);
+        console.log('printing response data');
+        console.log(response.data);
         console.log(response.headers['content-type']);
         const apiResponse = response.data ? response.data : {success: true};
         if(!(response.headers['content-type'] === 'application/json')) {
@@ -29,7 +29,7 @@ const sendRequest = (axiosFunc, url, res, data=null) => {
         else return res.json(apiResponse);
     })
     .catch(error => {
-        // console.log(error);
+        console.log(error);
         res.json(error);
     });
 };
