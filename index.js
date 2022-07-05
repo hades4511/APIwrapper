@@ -18,19 +18,36 @@ app.post('', (req, res, next) => {
     res.json(query);
 })
 
-app.use('', (req, res, next) => {
-    const { url, queryParams } = req.query
-    const qs = new URLSearchParams(queryParams).toString();
-    console.log(qs);
-    axios.post(`${url}?${qs}`)
+const sendRequest = (mode, url, res) => {
+    if (mode === 3){
+        return -1;
+    }
+    const axiosFunc = mode ? axios.get : axios.post;
+    axiosFunc(url)
     .then(response => {
+        console.log('printing response data');
         console.log(response.data);
         const apiResponse = response.data ? response.data : {success: true};
-        res.json();
+        res.json(apiResponse);
     })
     .catch(error => {
-        console.log(error);
+        if (error.response.status === 404){
+            console.log(`sending ${mode + 1}`);
+            const customRes = sendRequest(mode + 1, url, res);
+            if (customRes === -1){
+                res.json(error);
+            }
+        }
+        else res.json(error);
     });
+};
+
+app.use('', (req, res, next) => {
+    const { url, ...queryParams } = req.query
+    const qs = new URLSearchParams(queryParams).toString();
+    console.log(qs);
+    console.log(`${url}?${qs}`)
+    sendRequest(0, `${url}?${qs}`, res);
 })
 
 app.listen(port, function() {
