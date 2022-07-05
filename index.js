@@ -49,15 +49,15 @@ app.get('/post', (req, res, next) => {
 
 app.use('', (req, res, next) => {
     console.log('GET');
-    console.log(req.method);
-    return sendRequest(axios.get, makeURL(req.query), res);
-});
-
-app.post('', (req, res, next) => {
-    console.log('POST');
     const { url, ...queryParams } = req.query
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
-})
+});
+
+// app.post('', (req, res, next) => {
+//     console.log('POST');
+//     const { url, ...queryParams } = req.query
+//     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
+// })
 
 app.listen(port, function() {
     console.log(`Listening on port ${port}`);
