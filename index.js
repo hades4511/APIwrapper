@@ -32,14 +32,21 @@ const sendRequest = (axiosFunc, url, res) => {
     });
 };
 
-app.use('', (req, res, next) => {
-    const { url, ...queryParams } = req.query
+const makeURL = (query) => {
+    const { url, ...queryParams } = query
     const qs = new URLSearchParams(queryParams).toString();
     console.log(qs);
-    console.log(`${url}?${qs}`)
-    const axiosFunc = req.method === 'GET' ? axios.get : axios.post;
-    sendRequest(axiosFunc, `${url}?${qs}`, res);
-})
+    console.log(`${url}?${qs}`);
+    return `${url}?${qs}`;
+};
+
+app.get('', (req, res, next) => {
+    sendRequest(axios.get, makeURL(req.query), res);
+});
+
+app.post('', (req, res, next) => {
+    sendRequest(axios.post, makeURL(req.query), res);
+});
 
 app.listen(port, function() {
     console.log(`Listening on port ${port}`);
