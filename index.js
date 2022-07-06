@@ -24,7 +24,10 @@ const sendRequest = (axiosFunc, url, res, data=null) => {
         if(!(response.headers['content-type'] === 'application/json')) {
             return res.send(apiResponse);
         }
-        else return res.json(apiResponse);
+        else {
+            console.log(apiResponse);
+            return res.json(apiResponse);
+        }
     })
     .catch(error => {
         console.log(error);
@@ -41,13 +44,13 @@ const makeURL = (query) => {
 };
 
 app.get('/post', (req, res, next) => {
-    console.log('Force POST');
+    console.log('POST URL');
     const { url, ...queryParams } = req.query
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 });
 
 app.post('/get', (req, res, next) => {
-    console.log('Force POST');
+    console.log('GET URL');
     const { url, ...queryParams } = req.query
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 });
