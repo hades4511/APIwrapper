@@ -52,11 +52,11 @@ app.post('/get', (req, res, next) => {
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 });
 
-app.use('', (req, res, next) => {
-    console.log('GET');
-    const { url, ...queryParams } = req.query
-    return sendRequest(axios.post, makeURL(req.query), res, queryParams);
-});
+// app.use('', (req, res, next) => {
+//     console.log('GET');
+//     const { url, ...queryParams } = req.query
+//     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
+// });
 
 app.listen(port, function() {
     console.log(`Listening on port ${port}`);
