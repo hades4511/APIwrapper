@@ -43,13 +43,13 @@ const makeURL = (query) => {
     return `${url}?${qs}`;
 };
 
-app.get('/post', (req, res, next) => {
+app.post('/post', (req, res, next) => {
     console.log('POST URL');
     const { url, ...queryParams } = req.query
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
 });
 
-app.post('/get', (req, res, next) => {
+app.get('/get', (req, res, next) => {
     console.log('GET URL');
     const { url, ...queryParams } = req.query
     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
