@@ -21,7 +21,7 @@ const sendRequest = (axiosFunc, url, res, data=null) => {
     .then(response => {
         console.log(response.headers['content-type']);
         const apiResponse = response.data ? response.data : {success: true};
-        if(!(response.headers['content-type'] === 'application/json')) {
+        if(response.headers['content-type'] !== 'application/json') {
             return res.send(apiResponse);
         }
         else {
