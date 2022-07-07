@@ -14,11 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 const sendRequest = (method, url, res, data={}) => {
     const formData = FormData(data);
     console.log(data);
-    // console.log(formData);
+    console.log(formData);
     axios({
         method: method,
         url: url,
-        data: data,
+        data: formData,
         // headers: { ...formData.getHeaders() },
         // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
