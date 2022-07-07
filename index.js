@@ -11,12 +11,12 @@ app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-const sendRequest = (method, url, res, data={}) => {
+const sendRequest = (url, res, data={}) => {
     const formData = FormData(data);
     console.log(data);
     console.log(formData);
     axios({
-        method: method,
+        method: 'post',
         url: url,
         data: formData,
         // headers: { ...formData.getHeaders() },
@@ -39,23 +39,16 @@ const sendRequest = (method, url, res, data={}) => {
     });
 };
 
-const makeURL = (query) => {
-    const { url, ...queryParams } = query
-    const qs = new URLSearchParams(queryParams).toString();
-    console.log(`${url}?${qs}`);
-    return `${url}?${qs}`;
-};
-
 app.post('/post', (req, res, next) => {
     console.log('POST URL');
-    const { url, ...queryParams } = req.query
-    return sendRequest('post', makeURL(req.query), res, queryParams);
+    const { url, ...queryParams } = req.query;
+    return sendRequest(url, res, queryParams);
 });
 
 app.get('/get', (req, res, next) => {
     console.log('GET URL');
-    const { url, ...queryParams } = req.query
-    return sendRequest('post', makeURL(req.query), res, queryParams);
+    const { url, ...queryParams } = req.query;
+    return sendRequest(url, res, queryParams);
 });
 
 app.listen(port, function() {
