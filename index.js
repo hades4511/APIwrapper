@@ -20,23 +20,11 @@ app.post('', (req, res, next) => {
 
 const sendRequest = (method, url, res, data={}) => {
     const formData = FormData(data);
-    // const d2 = {
-    //     team_id: '65cd9b10-bc98-4938-8099-be8809e629fd',
-    //     secret: 'acb6042c-3f3f-428a-a2f3-711db5b58277',
-    //     foreign_id: 'eh192',
-    //     audio_url: 'https://g4smarketing.com/wp-content/uploads/2020/12/Voice-Drop-1-Paul-Rue-Car.mp3',
-    //     audio_type: 'mp3',
-    //     phone_number: '++14802701262',
-    //     caller_id: '+17703432956'
-    // };
     console.log(data);
-    // for (const key in data){
-    //     formData.append(key, data[key]);
-    // }
     console.log(formData);
     axios({
         method: method,
-        url: 'https://webhook.site/34d78eb4-e2dc-40d3-bfcc-3cf431afceea',
+        url: url,
         data: formData,
         // headers: { ...formData.getHeaders() },
         // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
