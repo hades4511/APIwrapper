@@ -2,12 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+FormData = require('form-data');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.urlencoded({ extended: true} ));
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 
 app.post('', (req, res, next) => {
     const query = req.query
@@ -15,9 +17,19 @@ app.post('', (req, res, next) => {
     res.json(query);
 })
 
-const sendRequest = (axiosFunc, url, res, data=null) => {
+const sendRequest = (method, url, res, data={}) => {
+    const formData = new FormData();
     console.log(data);
-    axiosFunc(url, data)
+    for (const key in data){
+        formData.append(key, data[key]);
+    }
+    console.log(formData);
+    axios({
+        method: method,
+        url: url,
+        data: formData,
+        headers: formData.getHeaders(),
+    })
     .then(response => {
         console.log(response.headers['content-type']);
         const apiResponse = response.data ? response.data : {success: true};
@@ -46,20 +58,19 @@ const makeURL = (query) => {
 app.post('/post', (req, res, next) => {
     console.log('POST URL');
     const { url, ...queryParams } = req.query
-    return sendRequest(axios.post, makeURL(req.query), res, queryParams);
+    return sendRequest('post', makeURL(req.query), res, queryParams);
 });
 
 app.get('/get', (req, res, next) => {
     console.log('GET URL');
     const { url, ...queryParams } = req.query
-    return sendRequest(axios.post, makeURL(req.query), res, queryParams);
+    return sendRequest('post', makeURL(req.query), res, queryParams);
 });
 
-// app.use('', (req, res, next) => {
-//     console.log('GET');
-//     const { url, ...queryParams } = req.query
-//     return sendRequest(axios.post, makeURL(req.query), res, queryParams);
-// });
+app.post('/fpost', (req, res, next) => {
+    console.log('fpost');
+    // console.log(req);
+});
 
 app.listen(port, function() {
     console.log(`Listening on port ${port}`);
