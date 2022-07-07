@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-// FormData = require('form-data');
 const FormData = require('form-urlencoded');
 
 const app = express();
@@ -12,20 +11,14 @@ app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-app.post('', (req, res, next) => {
-    const query = req.query
-    console.log(query);
-    res.json(query);
-})
-
 const sendRequest = (method, url, res, data={}) => {
     const formData = FormData(data);
     console.log(data);
-    console.log(formData);
+    // console.log(formData);
     axios({
         method: method,
         url: url,
-        data: formData,
+        data: data,
         // headers: { ...formData.getHeaders() },
         // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
@@ -49,7 +42,6 @@ const sendRequest = (method, url, res, data={}) => {
 const makeURL = (query) => {
     const { url, ...queryParams } = query
     const qs = new URLSearchParams(queryParams).toString();
-    console.log(qs);
     console.log(`${url}?${qs}`);
     return `${url}?${qs}`;
 };
@@ -64,12 +56,6 @@ app.get('/get', (req, res, next) => {
     console.log('GET URL');
     const { url, ...queryParams } = req.query
     return sendRequest('post', makeURL(req.query), res, queryParams);
-});
-
-app.post('/fpost', (req, res, next) => {
-    console.log('fpost');
-    console.log(req.headers);
-    res.json({success: true});
 });
 
 app.listen(port, function() {
