@@ -20,15 +20,15 @@ app.post('', (req, res, next) => {
 const sendRequest = (method, url, res, data={}) => {
     const formData = new FormData();
     console.log(data);
-    for (const key in data){
-        formData.append(key, data[key]);
-    }
-    console.log(formData);
+    // for (const key in data){
+    //     formData.append(key, data[key]);
+    // }
+    // console.log(formData);
     axios({
         method: method,
         url: url,
-        data: formData,
-        headers: formData.getHeaders(),
+        data: data,
+        // headers: formData.getHeaders(),
     })
     .then(response => {
         console.log(response.headers['content-type']);
