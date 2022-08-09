@@ -54,16 +54,16 @@ app.post('/post', (req, res, next) => {
     console.log('POST URL');
     const { url, ...queryParams } = req.query;
     const getParams = splitParams(queryParams);
-    url = `${url}?${new URLSearchParams(getParams).toString()}`;
-    return sendRequest(url, res, queryParams);
+    const updateURL = `${url}?${new URLSearchParams(getParams).toString()}`;
+    return sendRequest(updateURL, res, queryParams);
 });
 
 app.get('/get', (req, res, next) => {
     console.log('GET URL');
     const { url, ...queryParams } = req.query;
     const getParams = splitParams(queryParams);
-    url = `${url}?${new URLSearchParams(getParams).toString()}`;
-    return sendRequest(url, res, queryParams);
+    const updateURL = `${url}?${new URLSearchParams(getParams).toString()}`;
+    return sendRequest(updateURL, res, queryParams);
 });
 
 app.get('/test/get', (req, res, next) => {
