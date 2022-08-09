@@ -67,7 +67,8 @@ app.get('/get', (req, res, next) => {
 });
 
 app.post('/lead/post', (req, res, next) => {
-    console.log('POST URL');
+    console.log('Lead POST URL');
+    console.log(req.query)
     const { url, ...queryParams } = req.query.lead[0];
     const getParams = splitParams(queryParams);
     const updateURL = `${url}?${new URLSearchParams(getParams).toString()}`;
