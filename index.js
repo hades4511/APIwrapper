@@ -66,6 +66,22 @@ app.get('/get', (req, res, next) => {
     return sendRequest(updateURL, res, queryParams);
 });
 
+app.post('/lead/post', (req, res, next) => {
+    console.log('POST URL');
+    const { url, ...queryParams } = req.query.lead[0];
+    const getParams = splitParams(queryParams);
+    const updateURL = `${url}?${new URLSearchParams(getParams).toString()}`;
+    return sendRequest(updateURL, res, queryParams);
+});
+
+app.get('/lead/get', (req, res, next) => {
+    console.log('GET URL');
+    const { url, ...queryParams } = req.query.lead[0];
+    const getParams = splitParams(queryParams);
+    const updateURL = `${url}?${new URLSearchParams(getParams).toString()}`;
+    return sendRequest(updateURL, res, queryParams);
+});
+
 app.get('/test/get', (req, res, next) => {
     console.log('GET URL');
     const { url, ...queryParams } = req.query;
