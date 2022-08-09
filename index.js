@@ -15,15 +15,13 @@ const sendRequest = (url, res, data={}) => {
     const formData = FormData(data);
     console.log(data);
     console.log(formData);
+    console.log(url);
     axios({
         method: 'post',
         url: url,
         data: formData,
-        // headers: { ...formData.getHeaders() },
-        // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .then(response => {
-        console.log(response.headers['content-type']);
         const apiResponse = response.data ? response.data : {success: true};
         if(response.headers['content-type'] !== 'application/json') {
             return res.send(apiResponse);
@@ -39,16 +37,52 @@ const sendRequest = (url, res, data={}) => {
     });
 };
 
+const splitParams = queryParams => {
+    const getParams = {};
+    for (let key of Object.keys(queryParams)){
+        console.log(key);
+        let splitKey = key.split('_')
+        if(splitKey[0] === 'param' && splitKey.length > 1){
+            getParams[splitKey[1]] = queryParams[key];
+            delete queryParams[key]
+        }
+    }
+    return getParams;
+}
+
 app.post('/post', (req, res, next) => {
     console.log('POST URL');
     const { url, ...queryParams } = req.query;
+    const getParams = splitParams(queryParams);
+    url = `${url}?${new URLSearchParams(getParams).toString()}`;
     return sendRequest(url, res, queryParams);
 });
 
 app.get('/get', (req, res, next) => {
     console.log('GET URL');
     const { url, ...queryParams } = req.query;
+    const getParams = splitParams(queryParams);
+    url = `${url}?${new URLSearchParams(getParams).toString()}`;
     return sendRequest(url, res, queryParams);
+});
+
+app.get('/test/get', (req, res, next) => {
+    console.log('GET URL');
+    const { url, ...queryParams } = req.query;
+    const getParams = splitParams(queryParams);
+    console.log(getParams);
+    console.log(queryParams);
+    console.log(new URLSearchParams(getParams).toString())
+    return;
+});
+
+app.post('/test/post', (req, res, next) => {
+    console.log('POST URL');
+    const { url, ...queryParams } = req.query;
+    const getParams = splitParams(queryParams);
+    console.log(getParams);
+    console.log(getParams);
+    return
 });
 
 app.listen(port, function() {
