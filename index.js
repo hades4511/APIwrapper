@@ -43,7 +43,7 @@ const splitParams = queryParams => {
         console.log(key);
         let splitKey = key.split('_')
         if(splitKey[0] === 'param' && splitKey.length > 1){
-            getParams[splitKey[1]] = queryParams[key];
+            getParams[key.replace('param_','')] = queryParams[key];
             delete queryParams[key]
         }
     }
